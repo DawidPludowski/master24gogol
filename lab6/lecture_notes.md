@@ -9,6 +9,28 @@ FIFO
 
 ## Array of arrays
 
+* `double** x;` - pointer to the pointer
+* arrays may vary in size (additional table with sizes is required)
+
+This is not optimal (but used for dataframes - data_frame from R: `x` - list, `x[i]` - atomic vector, `i` - column index). B-trees are implemented like that. Subarrays can be strucs with meta-info:
+
+```{c}
+x = malloc(sizeof(double*)*n);
+//for i ...
+x[i] = malloc(sizeof(double)*d);
+
+x[i][j] == (x[i])[j]
+```
+
+Long vector with pointers to split points is used in real life.
+
+Homework:
+
+* `n x m` size arrays
+* get first 5 rows (x[:5])
+* get rows with positive value on the 1 col x[x[1] > 0,]
+* get rows with positive value on the 1 col except 1 col x[x[1] > 0, -1]
+
 ## Linked list and other directed root trees
 
 ```{c}
