@@ -1,0 +1,6 @@
+pymatrix.c
+setup.py
+aadsds.egg-info/PKG-INFO
+aadsds.egg-info/SOURCES.txt
+aadsds.egg-info/dependency_links.txt
+aadsds.egg-info/top_level.txt
