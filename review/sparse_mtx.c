@@ -15,6 +15,8 @@ typedef struct _mtx {
     int m;
 } MTX;
 
+int max(int a, int b) {return a > b ? a : b;}
+
 CSR* get_csr(int s, int n) {
     CSR* csr = malloc(sizeof(CSR));
     csr->data = malloc(sizeof(double)*s);
@@ -77,15 +79,38 @@ CSR* mtx2csr(MTX* mtx) {
     return csr;
 }
 
+MTX* csr2mtx(CSR* csr) {
+    int max_col = 0;
+    for (int i = 0; i < csr->s; i++) max_col = max(csr->idx[i], max_col);
+    int n = csr->n;
+    int m = max_col;
+
+    double* data = malloc(sizeof(double)*n*m);
+    MTX* mtx = get_mtx(data, n, m);
+
+    for (int i = 0; i < n * m; i++) data[i] = 0;
+    
+    for (int i = 0; i < n; i++) {
+        for (int j = csr->pointr[i]; j < csr->pointr[i+1]; i++) {
+            data[i*n+csr->idx[j]] = csr->data[j];
+        }
+    }
+
+    return mtx;
+}
+
 void main() {
     int n = 4;
     int m = 4;
     double* data = malloc(sizeof(double)*n*m);
-    for (int i = 0; i < n*m; i++) data[i] = i % 2 == 0 ? i : 0;
+    for (int i = 0; i < n*m; i++) data[i] = i % 3 == 0 ? i : 0;
 
     MTX* mtx = get_mtx(data, n, m);
     print_mtx(mtx);
 
     CSR* csr = mtx2csr(mtx);
     print_csr(csr);
+
+    MTX* mtx2 = csr2mtx(csr);
+    print_mtx(mtx);
 }
